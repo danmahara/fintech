@@ -131,7 +131,8 @@
             <a href="{{ route('owner.index') }}" class="@yield('dashboard_active')"><i
                     class="fas fa-tachometer-alt"></i>
                 Dashboard</a>
-            <a href="" class="@yield('campaigns_active')"><i class="fas fa-campaign"></i> Ongoing Campaigns</a>
+            <a href="{{route('owner.myCampaign')}}" class="@yield('campaigns_active')"><i class="fas fa-campaign"></i>
+                My Campaigns</a>
             <form action="{{ route('owner.logout') }}" method="POST">
                 @csrf
                 <button type="submit">

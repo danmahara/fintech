@@ -19,7 +19,7 @@ class UserController extends Controller
 
     public function index()
     {
-
+        return view('index');
     }
     public function loginForm()
     {
@@ -100,18 +100,30 @@ class UserController extends Controller
 
 
 
-    public function logout(Request $request)
+    public function logout()
     {
         $user = Auth::user();
 
         if ($user) {
-            $user->tokens->each(function ($token) {
-                $token->delete();
-            });
+            // Check if the user has the 'investor' role
+            if ($user->role === 'investor') {
+                // Delete the investor user's tokens
+                $user->tokens->each(function ($token) {
+                    $token->delete();
+                });
 
-            return response()->json(['message' => 'Logged out successfully'], 200);
+                // Redirect to the index route after logout
+                return redirect()->route('index')->with('success', 'Investor logged out successfully');
+            } else {
+                // If the user is not an investor, return a 403 error with user details for debugging
+                return response()->json([
+                    'message' => 'Only investors can perform this action',
+                    'role' => $user->role
+                ], 403);
+            }
         }
 
+        // If the user is not authenticated, return a 401 error
         return response()->json(['message' => 'Unauthorized'], 401);
     }
 

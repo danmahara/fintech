@@ -16,7 +16,13 @@ class Campaign extends Model
         'raised_amount',
         'owner_id',
         'status',
+        'category_id'
     ];
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 
     // Relationship with Donations
     public function donations()
