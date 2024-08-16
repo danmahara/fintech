@@ -5,7 +5,7 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\ProjectOwnerController;
-
+use App\Http\Controllers\InvestorController;
 // Public Routes
 Route::get('/', function () {
     return view('index');
@@ -28,15 +28,15 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
 
 // Project Owner Routes
 Route::group(['prefix' => 'owner', 'middleware' => 'auth'], function () {
-
     Route::get('/', [ProjectOwnerController::class, 'index'])->name('owner.index');
+    Route::post('campaignStore', [ProjectOwnerController::class, 'storeCampaign'])->name('campaignStore'); // Updated route name
     Route::post('logout', [ProjectOwnerController::class, 'logout'])->name('owner.logout');
-    Route::get('campaign/create', [ProjectOwnerController::class, 'createCampaign'])->name('owner.campaign.create');
-    Route::post('campaign/store', [ProjectOwnerController::class, 'storeCampaign'])->name('owner.campaign.store');
 });
 
-// Investor Routes
+
+// Investor Routes 
 Route::group(['prefix' => 'investor', 'middleware' => 'auth'], function () {
-    Route::get('/', [ProjectOwnerController::class, 'index'])->name('investor.index');
+    Route::get('/', [InvestorController::class, 'index'])->name('investor.index');
+    Route::get('/', [InvestorController::class, 'countTotal'])->name('investor.index');
     Route::post('logout', [ProjectOwnerController::class, 'logout'])->name('investor.logout');
 });

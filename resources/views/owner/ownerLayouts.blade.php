@@ -4,10 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Investor Dashboard')</title>
+    <title>@yield('title', 'Owner Dashboard')</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f4f4f4;
             margin: 0;
             padding: 0;
@@ -20,18 +20,30 @@
             height: 100vh;
             padding-top: 20px;
             position: fixed;
+            color: #ecf0f1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
-        .sidebar a {
+        .sidebar a,
+        .sidebar button {
             display: block;
             color: #ecf0f1;
             padding: 15px;
             text-decoration: none;
             font-size: 1.2em;
             border-bottom: 1px solid #34495e;
+            transition: background-color 0.3s ease;
+            background: none;
+            border: none;
+            text-align: left;
+            cursor: pointer;
+            width: 100%;
         }
 
-        .sidebar a:hover {
+        .sidebar a:hover,
+        .sidebar button:hover {
             background-color: #34495e;
         }
 
@@ -45,8 +57,10 @@
 
         .content {
             margin-left: 250px;
-            padding: 20px;
+            padding: 40px;
             width: calc(100% - 250px);
+            background-color: #ecf0f1;
+            min-height: 100vh;
         }
 
         .navbar {
@@ -55,6 +69,57 @@
             padding: 15px;
             text-align: center;
             font-size: 1.2em;
+            margin-bottom: 20px;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .card {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .card h2 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .card .stats {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .card .stats div {
+            text-align: center;
+        }
+
+        .card .stats h3 {
+            font-size: 1.2em;
+            color: #2980b9;
+        }
+
+        .card .stats p {
+            font-size: 1.5em;
+            color: #2c3e50;
+            margin: 10px 0 0 0;
+        }
+
+        .card p {
+            color: #7f8c8d;
+            font-size: 1em;
+        }
+
+        .logout-container {
+            padding: 15px;
+            border-top: 1px solid #34495e;
+        }
+
+        .sidebar button i {
+            color: #ecf0f1;
+            margin-right: 10px;
         }
     </style>
 </head>
@@ -62,24 +127,23 @@
 <body>
 
     <div class="sidebar">
-        <a href="{{ route('investor.index') }}" class="@yield('dashboard_active')"><i class="fas fa-tachometer-alt"></i>
-            Dashboard</a>
-        {{--
-        <a href="{{ route('investor.investments') }}" class="@yield('investments_active')"><i
-                class="fas fa-hand-holding-usd"></i> My Investments</a>
-        <a href="{{ route('investor.campaigns') }}" class="@yield('campaigns_active')"><i class="fas fa-campaign"></i>
-            Ongoing Campaigns</a>
-        <a href="{{ route('investor.notifications') }}" class="@yield('notifications_active')"><i
-                class="fas fa-bell"></i> Notifications</a>
-        <a href="{{ route('logout') }}" style="margin-top: auto;"><i class="fas fa-sign-out-alt"></i> Logout</a>
-        --}}
+        <div>
+            <a href="{{ route('owner.index') }}" class="@yield('dashboard_active')"><i
+                    class="fas fa-tachometer-alt"></i>
+                Dashboard</a>
+            <a href="" class="@yield('campaigns_active')"><i class="fas fa-campaign"></i> Ongoing Campaigns</a>
+            <form action="{{ route('owner.logout') }}" method="POST">
+                @csrf
+                <button type="submit">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </form>
+        </div>
     </div>
-
     <div class="content">
         <div class="navbar">
-            @yield('navbar')
+            @yield('header')
         </div>
-
         @yield('main')
     </div>
 

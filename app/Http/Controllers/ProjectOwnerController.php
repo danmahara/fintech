@@ -8,39 +8,31 @@ use Auth;
 
 class ProjectOwnerController extends Controller
 {
+
     public function index()
     {
-        return view('investor.index');
+        return view('owner.index');
     }
-
-
-    // public function createCampaign()
-    // {
-    //     return view('owner.create-campaign');
-    // }
-
     // Store the newly created campaign
     public function storeCampaign(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
-            'goal' => 'required|numeric|min:0',
-            'start_date' => 'required|date|after_or_equal:today',
-            'end_date' => 'required|date|after:start_date',
+            'goal_amount' => 'required|numeric',
+            'user_id' => 'required|exists:users,id',
         ]);
 
         $campaign = new Campaign();
-        $campaign->title = $request->title;
-        $campaign->description = $request->description;
-        $campaign->goal = $request->goal;
-        $campaign->start_date = $request->start_date;
-        $campaign->end_date = $request->end_date;
-        $campaign->status = 'pending'; // Default status
+        $campaign->title = $validated['title'];
+        $campaign->description = $validated['description'];
+        $campaign->goal_amount = $validated['goal_amount'];
+        $campaign->user_id = $validated['user_id'];
         $campaign->save();
 
-        return redirect()->route('owner.campaign')->with('success', 'Campaign created successfully!');
+        return redirect()->route('owner.index')->with('success', 'Campaign created successfully!');
     }
+
 
     public function logout(Request $request)
     {

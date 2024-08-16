@@ -33,22 +33,22 @@ class CampaignController extends Controller
         return Campaign::findOrFail($id);
     }
 
-    public function store(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'campaign_id' => 'required|exists:campaigns,id',
-            'amount' => 'required|numeric',
-            'description' => 'nullable|string',
-            'date' => 'required|date',
-        ]);
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
-        }
+    // public function store(Request $request)
+    // {
+    //     $validator = Validator::make($request->all(), [
+    //         'campaign_id' => 'required|exists:campaigns,id',
+    //         'amount' => 'required|numeric',
+    //         'description' => 'nullable|string',
+    //         'date' => 'required|date',
+    //     ]);
+    //     if ($validator->fails()) {
+    //         return response()->json($validator->errors(), 422);
+    //     }
 
-        // Proceed with creating the expense if validation passes
-        $campaign = Campaign::create($request->all());
-        return response()->json($campaign, 201);
-    }
+    //     // Proceed with creating the expense if validation passes
+    //     $campaign = Campaign::create($request->all());
+    //     return response()->json($campaign, 201);
+    // }
 
     public function update(Request $request, $id)
     {
