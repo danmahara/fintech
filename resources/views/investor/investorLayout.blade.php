@@ -148,8 +148,13 @@
     <div class="sidebar">
         <a href="{{ route('investor.index') }}" class="@yield('dashboard_active')"><i class="fas fa-tachometer-alt"></i>
             Dashboard</a>
-        <a href="" class="@yield('campaigns_active')"><i class="fas fa-campaign"></i> Ongoing Campaigns</a>
-        <a href="" class="@yield('investments_active')"><i class="fas fa-hand-holding-usd"></i> My Investments</a>
+       <a href="{{route('investor.investmentList')}}" class="@yield('investments_active')"><i
+                class="fas fa-hand-holding-usd"></i> My Investments</a>
+             
+        <a href="{{route('investor.campaignList')}}" class="@yield('campaign_active')"><i
+                class="fas fa-hand-holding-usd"></i> Ongoing Campaign</a>
+             
+                <form action="{{ route('investor.logout') }}" method="POST">
         <form action="{{ route('investor.logout') }}" method="POST">
             @csrf
             <button type="submit">

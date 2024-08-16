@@ -11,15 +11,18 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('campaigns', function (Blueprint $table) {
-            $table->id(); // Creates an auto-incrementing primary key column named 'id'
-            $table->string('title'); // Campaign title
-            $table->text('description'); // Campaign description
-            $table->decimal('goal_amount', 10, 2); // Goal amount with decimal precision
-            $table->decimal('raised_amount', 10, 2)->default(0); // Amount raised, default to 0
+            $table->id(); // Unsigned Big Integer (unsignedBigInteger)
+            $table->string('title');
+            $table->text('description');
+            $table->decimal('goal_amount', 10, 2);
+            $table->decimal('raised_amount', 10, 2)->default(0);
             $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Foreign key to 'users' table
-            $table->enum('status', ['pending', 'active', 'completed', 'failed'])->default('pending'); // Campaign status
-            $table->timestamps(); // Created at and updated at timestamps
+            $table->foreignId('category_id')->constrained('categories')->onDelete('cascade'); // Foreign key to 'categories' table
+            $table->enum('status', ['pending', 'active', 'completed', 'failed'])->default('pending');
+            $table->timestamps();
         });
+        
+        
     }
 
     /**

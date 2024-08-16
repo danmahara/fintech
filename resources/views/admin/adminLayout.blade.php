@@ -76,7 +76,7 @@
         <a href="{{ route('admin.users') }}" class="{{ request()->routeIs('admin.users') ? 'active' : '' }}">
             <i class="fas fa-users"></i> Users List
         </a>
-        <a href="{{ route('admin.campaign') }}" class="{{ request()->routeIs('admin.campaign') ? 'active' : '' }}">
+        <a href="{{ route('admin.campaignList') }}" class="{{ request()->routeIs('admin.campaign') ? 'active' : '' }}">
             <i class="fas fa-campaign"></i> Campaign
         </a>
         <form action="{{ route('admin.logout') }}" method="POST">

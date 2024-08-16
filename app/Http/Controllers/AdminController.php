@@ -28,8 +28,8 @@ class AdminController extends Controller
         // // Pass both counts to the view
         return view('admin.index', compact('totalUsers', 'totalDonations', 'totalCampaign'));
         // return view('admin.index');
-    
-        
+
+
     }
 
     public function userList()
@@ -45,13 +45,24 @@ class AdminController extends Controller
 
     public function logout(Request $request)
     {
-        Auth::logout(); // Log out the user
+        $user = Auth::user();
 
-        $request->session()->invalidate(); // Invalidate the session
+        if ($user && $user->role === 'admin') {
+            // Delete all tokens for the admin user
+            $user->tokens->each(function ($token) {
+                $token->delete();
+            });
 
-        $request->session()->regenerateToken(); // Regenerate the CSRF token
+            // Redirect to the index page after logging out
+            return redirect()->route('index');
+        }
 
-        return redirect('/'); // Redirect to the home page or any other page
+        // Return a JSON response if the user is not an admin
+        return response()->json(['message' => 'Only admins can perform this action', 'role' => $user ? $user->role : 'None'], 403);
     }
+
+
+
+
 
 }

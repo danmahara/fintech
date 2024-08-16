@@ -15,6 +15,50 @@ class CampaignController extends Controller
     }
 
 
+    public function approvedCampaignList()
+    {
+        // Fetch campaigns where the 'approved' status is true
+        $approvedCampaigns = Campaign::where('status', 'approved')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        // Return a view with the approved campaigns data
+        return view('investor.campaignList', compact('approvedCampaigns'));
+    }
+
+    public function myCampaign()
+    {
+        // Retrieve campaigns where the authenticated user is the creator
+        $userId = auth()->id();
+        $myCampaigns = Campaign::where('user_id', $userId)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        // Return the view with the list of campaigns
+        return view('owner.myCampaign', compact('myCampaigns'));
+    }
+
+
+
+    public function updateCampaignStatus(Request $request, $id)
+    {
+        $request->validate([
+            'status' => 'required|in:pending,active,inactive,completed'
+        ]);
+
+        $campaign = Campaign::findOrFail($id);
+        $campaign->status = $request->input('status');
+
+        if ($campaign->save()) {
+            return redirect()->route('admin.campaignList');
+            // return response()->json(['success' => true, 'message' => 'Status updated successfully!']);
+        } else {
+            return response()->json(['success' => false, 'message' => 'Failed to update status.'], 500);
+        }
+    }
+
+
+
 
 
     // public function updateStatus(Request $request, $id)

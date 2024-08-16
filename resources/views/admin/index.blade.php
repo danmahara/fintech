@@ -52,7 +52,6 @@
     <div class="cards">
         <div class="card">
             <h2>Total Users</h2>
-
             <p>{{ $totalUsers }}</p>
 
 

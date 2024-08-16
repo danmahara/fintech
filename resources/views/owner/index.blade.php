@@ -8,8 +8,27 @@
 
 <div class="card">
     <h2>Create a New Campaign</h2>
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+
     <form action="{{ route('campaignStore') }}" method="POST">
         @csrf
+        <div class="form-group">
+            Category
+            <select name="category_id" id="category">
+                @foreach ($categories as $category)
+                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                @endforeach
+            </select>
+        </div>
         <div class="form-group">
             <label for="title">Campaign Title</label>
             <input type="text" id="title" name="title" class="form-control small-input" required>
@@ -26,6 +45,8 @@
         <button type="submit" class="btn">Create Campaign</button>
     </form>
 </div>
+
+
 
 <style>
     .form-group {

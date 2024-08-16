@@ -63,34 +63,60 @@
     @if(session('success'))
         <p>{{ session('success') }}</p>
     @endif
+    <div class="container">
+    <h2 class="text-center">Approved Campaigns</h2>
 
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Title</th>
-                <th>Description</th>
-                <th>Status</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($campaigns as $campaign)
-                <tr>
-                    <td>{{ $campaign->id }}</td>
-                    <td>{{ $campaign->title }}</td>
-                    <td>{{ $campaign->description }}</td>
-                    <td>{{ ucfirst($campaign->status) }}</td>
-                    <td>
-                        <form action="{{ route('admin.campaigns.updateStatus', $campaign->id) }}" method="POST">
-                            @csrf
-                            @method('POST')
-                            <button name="status" value="accepted">Accept</button>
-                            <button name="status" value="rejected">Reject</button>
-                        </form>
-                    </td>
-                </tr>
+    @if ($approvedCampaigns->isEmpty())
+        <p>No approved campaigns found.</p>
+    @else
+        <div class="row">
+            @foreach ($approvedCampaigns as $campaign)
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ $campaign->title }}</h5>
+                            <p class="card-text">{{ Str::limit($campaign->description, 100) }}</p>
+                            <p><strong>Goal Amount:</strong> ${{ number_format($campaign->goal_amount, 2) }}</p>
+                            <p><strong>End Date:</strong> {{ $campaign->end_date->format('M d, Y') }}</p>
+                            <a href="{{ route('campaign.show', $campaign->id) }}" class="btn btn-primary">View Details</a>
+                        </div>
+                    </div>
+                </div>
             @endforeach
-        </tbody>
-    </table>
+        </div>
+    @endif
 </div>
+
+<script>
+    function updateStatus(campaignId, newStatus) {
+        // Create a new form element
+        var form = document.createElement("form");
+        form.method = "POST";
+        form.action = "{{ route('admin.updateCampaignStatus', '') }}/" + campaignId;
+
+        // Add CSRF token input
+        var csrfInput = document.createElement("input");
+        csrfInput.type = "hidden";
+        csrfInput.name = "_token";
+        csrfInput.value = "{{ csrf_token() }}";
+        form.appendChild(csrfInput);
+
+        // Add method input (to mimic PUT method)
+        var methodInput = document.createElement("input");
+        methodInput.type = "hidden";
+        methodInput.name = "_method";
+        methodInput.value = "PUT";
+        form.appendChild(methodInput);
+
+        // Add the new status as an input
+        var statusInput = document.createElement("input");
+        statusInput.type = "hidden";
+        statusInput.name = "status";
+        statusInput.value = newStatus;
+        form.appendChild(statusInput);
+
+        // Append the form to the body and submit it
+        document.body.appendChild(form);
+        form.submit();
+    }
+</script>
