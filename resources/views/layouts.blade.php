@@ -9,12 +9,12 @@
 
 <body>
 
-    @extends('layouts')
+    this is layout page
+
+    @yield('main')
 
 
-    @section('main')
 
-    @endsection
 
 </body>
 
