@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -18,7 +17,7 @@ return new class extends Migration
             $table->decimal('goal_amount', 10, 2); // Goal amount with decimal precision
             $table->decimal('raised_amount', 10, 2)->default(0); // Amount raised, default to 0
             $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Foreign key to 'users' table
-            $table->enum('status', ['active', 'completed', 'failed'])->default('active'); // Campaign status
+            $table->enum('status', ['pending', 'active', 'completed', 'failed'])->default('pending'); // Campaign status
             $table->timestamps(); // Created at and updated at timestamps
         });
     }
