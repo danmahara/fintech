@@ -10,8 +10,23 @@ class CampaignController extends Controller
 {
     public function index()
     {
-        return Campaign::where('status', 'active')->get();
+        $campaigns = Campaign::all();
+        return view('admin.campaignList', compact('campaigns'));
     }
+
+
+
+
+    // public function updateStatus(Request $request, $id)
+    // {
+    //     $campaign = Campaign::findOrFail($id);
+    //     $campaign->status = $request->input('status');
+    //     $campaign->save();
+
+    //     return redirect()->route('admin.campaign')->with('success', 'Campaign status updated!');
+    // }
+
+
 
     public function show($id)
     {

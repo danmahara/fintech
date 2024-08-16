@@ -12,41 +12,41 @@ class UserController extends Controller
 {
 
 
-    public function registerForm()
+    public function signupForm()
     {
-        return view('register');
+        return view('signup');
     }
 
     public function index()
     {
 
     }
+    public function loginForm()
+    {
+        return view('login');
+    }
+
 
     public function register(Request $request)
     {
-        // Define validation rules
-        $validator = Validator::make($request->all(), [
+        // Validate the input
+        $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:6|confirmed', // Confirm password matches password_confirmation
-            'role' => 'required|in:project_owner,investor,admin', // Validate role
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:6|confirmed',
+            'role' => 'required|string|in:admin,project_owner,investor',
         ]);
 
-
-        // Check if validation fails
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
-        }
-
-        // Proceed with storing the user if validation passes
+        // Create the user
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
-            'role' => $request->role,
+            'role' => $request->role, // Ensure role is correctly assigned
         ]);
 
-        return response()->json(['success' => true, 'message' => 'Registered successfully', $user, 201]);
+        return redirect()->route('loginForm');
+        // return response()->json(['success' => true, 'message' => 'Registered successfully', $user, 201]);
     }
 
     public function login(Request $request)
@@ -61,62 +61,80 @@ class UserController extends Controller
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
+
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
-            // Authentication passed
             $user = Auth::user();
-
-            // Generate a personal access token
-            $token = $user->createToken('Personal Access Token')->accessToken;
-
-            // Determine dashboard URL based on user role
-            $dashboardUrl = $this->getDashboardUrl($user->role);
-
-            return response()->json([
-                'token' => $token,
-                'user' => $user,
-                'dashboard_url' => $dashboardUrl
-            ], 200);
-        } else {
-            // Authentication failed
-            return response()->json(['message' => 'Unauthorized'], 401);
+            // Redirect based on user role
+            if ($user->role === 'admin') {
+                return redirect()->route('admin.index');
+            } elseif ($user->role === 'project_owner') {
+                return redirect()->route('owner.index'); // Adjust route as necessary
+            } elseif ($user->role === 'investor') {
+                return redirect()->route('investor.index'); // Adjust route as necessary
+            }
         }
+
+        return redirect()->back()->withErrors([
+            'email' => 'These credentials do not match our records.',
+        ]);
+
     }
 
 
 
-    private function getDashboardUrl($role)
-    {
-        switch ($role) {
-            case 'project_owner':
-                return url('/dashboard/project-owner'); // URL for project owner dashboard
-            case 'investor':
-                return url('/dashboard/investor'); // URL for investor dashboard
-            case 'admin':
-                return url('/dashboard/admin'); // URL for admin dashboard
-            default:
-                return url('/'); // Default URL if role is not recognized
-        }
-    }
+    // private function getDashboardUrl($role)
+    // {
+    //     switch ($role) {
+    //         case 'project_owner':
+    //             return url('/dashboard/project-owner'); // URL for project owner dashboard
+    //         case 'investor':
+    //             return url('/dashboard/investor'); // URL for investor dashboard
+    //         case 'admin':
+    //             return url('/dashboard/admin'); // URL for admin dashboard
+    //         default:
+    //             return url('/'); // Default URL if role is not recognized
+    //     }
+    // }
 
 
 
     public function logout(Request $request)
     {
         $user = Auth::user();
-    
+
         if ($user) {
             $user->tokens->each(function ($token) {
                 $token->delete();
             });
-    
+
             return response()->json(['message' => 'Logged out successfully'], 200);
         }
-    
+
         return response()->json(['message' => 'Unauthorized'], 401);
     }
-    
+
+    public function destroy($id)
+    {
+        // Find the user by ID
+        $user = User::find($id);
+
+        if (!$user) {
+            return response()->json(['message' => 'User not found.'], 404);
+        }
+
+        // Check if the authenticated user has the right to delete this user
+        if (Auth::id() !== $user->id && !Auth::user()->isAdmin()) {
+            return response()->json(['message' => 'Unauthorized.'], 403);
+        }
+
+        // Delete the user
+        $user->delete();
+
+        return response()->json(['message' => 'User deleted successfully.'], 200);
+    }
+
 
 
     public function me()
