@@ -11,6 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
+        
         Schema::create('donations', function (Blueprint $table) {
             $table->id(); // Primary key 'id'
             $table->foreignId('campaign_id') // Foreign key to 'campaigns' table
