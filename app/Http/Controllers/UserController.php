@@ -51,7 +51,7 @@ class UserController extends Controller
             'role' => $request->input('role'),
             'name' => $request->input('name'),
             'email' => $request->input('email'),
-            'password' => Hash::make($request->input('password')), // Hash the password
+            'password' => bcrypt($request->input('password')), // Hash the password
         ]);
     
         // Redirect or return a response
