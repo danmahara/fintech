@@ -7,35 +7,47 @@ use Illuminate\Http\Request;
 use App\Models\Campaign;
 class DonationController extends Controller
 {
+
+
     public function storeDonation(Request $request)
     {
         // Validate the request data
         $request->validate([
             'amount' => 'required|numeric|min:100',
-            'campaign_id' => 'required|exists:campaigns,id', // Assuming you have a campaigns table
+            'campaign_id' => 'required|exists:campaigns,id',
         ]);
 
-        // dd($request->all());
+        // Retrieve the campaign
         $campaign = Campaign::findOrFail($request->campaign_id);
 
-        if (!$campaign) {
-            return response()->jsons(['failed' => 'Campaing not found']);
+        // Check if the raised amount has reached the goal
+        if ($campaign->raised_amount >= $campaign->goal_amount) {
+            return redirect()->route('investor.index')->with('error', 'This campaign has already reached its goal. No further donations can be made.');
         }
+
+        // Calculate the new raised amount
+        $newRaisedAmount = $campaign->raised_amount + $request->amount;
+
+        // Ensure the new raised amount does not exceed the goal amount
+        if ($newRaisedAmount > $campaign->goal_amount) {
+            return redirect()->route('investor.index')->with('error', 'Donation exceeds the campaign goal amount.');
+        }
+
+        // Update the campaign's raised amount
+        $campaign->raised_amount = $newRaisedAmount;
+        $campaign->save();
 
         // Create a new donation record
         $donation = new Donation();
         $donation->amount = $request->amount;
         $donation->campaign_id = $request->campaign_id;
-        $donation->user_id = $request->user_id; // Associate the donation with the authenticated user
+        $donation->user_id = $request->user_id;
         $donation->save();
 
-        // Optionally: Update campaign progress or handle additional logic
-
         // Redirect with success message
-        // return response()->json(['success' => 'Donation successfully made.']);
-        // return response()->json(['success' => 'Donation successfully made.']);
         return redirect()->route('investor.index')->with('success', 'Donation successfully made.');
     }
+
 
 
     public function index()
