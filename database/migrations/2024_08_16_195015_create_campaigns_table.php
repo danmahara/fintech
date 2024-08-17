@@ -18,11 +18,13 @@ return new class extends Migration {
             $table->decimal('raised_amount', 10, 2)->default(0);
             $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Foreign key to 'users' table
             $table->foreignId('category_id')->constrained('categories')->onDelete('cascade'); // Foreign key to 'categories' table
-            $table->enum('status', ['pending', 'active', 'completed', 'failed'])->default('pending');
+            $table->enum('status', ['under review', 'pending', 'active', 'completed', 'failed'])->default('under review');
+            $table->string('business_experience')->nullable();
+            $table->string('idea_business_detail')->nullable();
             $table->timestamps();
         });
-        
-        
+
+
     }
 
     /**

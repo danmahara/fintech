@@ -6,15 +6,16 @@
 
 @section('main')
 <div class="card">
-    <h2>Approved Campaigns</h2>
+    <h2>My Campaigns</h2>
     <table class="table">
         <thead>
             <tr>
                 <th>Title</th>
                 <th>Description</th>
                 <th>Goal Amount</th>
+                <th>Raised Amount</th>
+                <th>Status</th>
                 <th>Action</th>
-                <!-- <th>Created At</th>  -->
             </tr>
         </thead>
         <tbody>
@@ -23,14 +24,42 @@
                     <td>{{ $campaign->title }}</td>
                     <td>{{ $campaign->description }}</td>
                     <td>{{ $campaign->goal_amount }}</td>
+                    <td>{{$campaign->raised_amount}}</td>
+                    <td>{{$campaign->status}}</td>
                     <td>
-                        <a href="">edit</a>
+                        <button class="btn-edit" data-campaign-id="{{ $campaign->id }}" data-title="{{ $campaign->title }}"
+                            data-description="{{ $campaign->description }}" data-goal-amount="{{ $campaign->goal_amount }}">
+                            Edit
+                        </button>
                     </td>
-                    <!-- <td>{{ $campaign->created_at->format('Y-m-d') }}</td> -->
                 </tr>
             @endforeach
         </tbody>
     </table>
+</div>
+<!-- Edit Modal -->
+<div id="editModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Edit Campaign</h2>
+        <form id="editForm" method="POST" action="">
+            @csrf
+            @method('PUT')
+            <div class="form-group">
+                <label for="editTitle">Title</label>
+                <input type="text" id="editTitle" name="title" required>
+            </div>
+            <div class="form-group">
+                <label for="editDescription">Description</label>
+                <textarea id="editDescription" name="description" rows="4" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="editGoalAmount">Goal Amount</label>
+                <input type="number" id="editGoalAmount" name="goal_amount" min="100" required>
+            </div>
+            <button type="submit" class="btn">Update</button>
+        </form>
+    </div>
 </div>
 
 
@@ -115,13 +144,15 @@
         font-weight: bold;
     }
 
-    .form-group input {
+    .form-group input,
+    .form-group textarea {
         padding: 8px;
         font-size: 0.9em;
         border: 1px solid #bdc3c7;
         border-radius: 4px;
         background-color: #ecf0f1;
         color: #2c3e50;
+        width: 100%;
     }
 
     .btn {
@@ -140,13 +171,12 @@
     }
 </style>
 
-
 <script>
     // Get the modal
-    var modal = document.getElementById("donationModal");
+    var modal = document.getElementById("editModal");
 
     // Get the button that opens the modal
-    var btns = document.querySelectorAll(".btn-donate");
+    var btns = document.querySelectorAll(".btn-edit");
 
     // Get the <span> element that closes the modal
     var span = document.getElementsByClassName("close")[0];
@@ -155,8 +185,14 @@
     btns.forEach(function (btn) {
         btn.onclick = function () {
             var campaignId = this.getAttribute("data-campaign-id");
-            document.getElementById("campaign_id").value = campaignId;
-            document.getElementById("donationForm").action = `/path/to/donation/endpoint/${campaignId}`;
+            var formAction = `{{ route('owner.campaignUpdate', ':id') }}`.replace(':id', campaignId);
+            document.getElementById("editForm").action = formAction;
+
+            // Set existing values in the form fields
+            document.getElementById("editTitle").value = this.getAttribute("data-title");
+            document.getElementById("editDescription").value = this.getAttribute("data-description");
+            document.getElementById("editGoalAmount").value = this.getAttribute("data-goal-amount");
+
             modal.style.display = "block";
         }
     });
@@ -173,19 +209,6 @@
         }
     }
 
-    // Client-side validation
-    document.getElementById("donationForm").onsubmit = function (e) {
-        var amount = parseFloat(document.getElementById("amount").value);
-        var campaignGoal = parseFloat(document.getElementById("campaign_id").getAttribute("data-goal-amount"));
-
-        if (amount < 100) {
-            alert("The amount must be at least 100.");
-            e.preventDefault(); // Prevent form submission
-        } else if (amount > campaignGoal) {
-            alert("The amount cannot exceed the goal amount.");
-            e.preventDefault(); // Prevent form submission
-        }
-    }
 </script>
 
 @endsection

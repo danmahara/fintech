@@ -58,6 +58,7 @@ class DonationController extends Controller
     {
         $user = auth()->user();
 
+        dd($user->role);
         // dd($user->role);
 
         // Check if the authenticated user exists and has the role of 'investor'

@@ -40,16 +40,19 @@
             text-align: left;
             cursor: pointer;
             width: 100%;
+            box-sizing: border-box; /* Ensures padding is included in the element's width */
+        }
+
+        .sidebar a.active,
+        .sidebar button.active {
+            background-color: #2980b9;
         }
 
         .sidebar a:hover,
-        .sidebar button:hover {
-            background-color: #34495e;
-        }
+.sidebar button:hover {
+    background-color: #3498db; /* Light blue color on hover */
+}
 
-        .sidebar a.active {
-            background-color: #2980b9;
-        }
 
         .sidebar i {
             margin-right: 10px;
@@ -128,16 +131,11 @@
 
     <div class="sidebar">
         <div>
-            <a href="{{ route('owner.index') }}" class="@yield('dashboard_active')"><i
-                    class="fas fa-tachometer-alt"></i>
-                Dashboard</a>
-            <a href="{{route('owner.myCampaign')}}" class="@yield('campaigns_active')"><i class="fas fa-campaign"></i>
-                My Campaigns</a>
+            <a href="{{ route('owner.index') }}" class="{{ request()->routeIs('owner.index') ? 'active' : '' }}"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+            <a href="{{route('owner.myCampaign')}}" class="{{ request()->routeIs('owner.myCampaign') ? 'active' : '' }}"><i class="fas fa-campaign"></i> My Campaigns</a>
             <form action="{{ route('owner.logout') }}" method="POST">
                 @csrf
-                <button type="submit">
-                    <i class="fas fa-sign-out-alt"></i> Logout
-                </button>
+                <button type="submit" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</button>
             </form>
         </div>
     </div>
