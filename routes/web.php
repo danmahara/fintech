@@ -28,6 +28,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     Route::get('/users', [AdminController::class, 'userList'])->name('admin.users');
     Route::get('/campaign', [CampaignController::class, 'index'])->name('admin.campaignList');
     Route::put('/updateStatus/{id}', [CampaignController::class, 'updateCampaignStatus'])->name('admin.updateCampaignStatus');
+    Route::delete('/user/{id}', [UserController::class, 'destroy'])->name('user.delete');
     Route::post('/logout', [AdminController::class, 'logout'])->name('admin.logout');
 });
 

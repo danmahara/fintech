@@ -17,14 +17,22 @@
             </thead>
             <tbody>
                 @foreach ($users as $user)
-                    <tr class="odd:bg-white even:bg-gray-100"> <!-- alternating row colors -->
-                        <td class="border border-gray-300 p-3">{{ $user->id }}</td>
-                        <td class="border border-gray-300 p-3">{{ $user->name }}</td>
-                        <td class="border border-gray-300 p-3">{{ $user->email }}</td>
-                        <td class="border border-gray-300 p-3">{{ ucfirst($user->role) }}</td>
-                        <td class="border border-gray-300 p-3">
-                            <a href="#" class="text-blue-600 hover:text-blue-800">Delete</a>
+                    <tr>
+                        <td>{{ $user->id }}</td>
+                        <td>{{ $user->name }}</td>
+                        <td>{{ $user->email }}</td>
+                        <td>{{ ucfirst($user->role) }}</td>
+                        <td>
+                            <form action="{{ route('user.delete', $user->id) }}" method="POST" style="display: inline;"
+                                onsubmit="return confirm('Are you sure you want to delete this user?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" style="border: none; background: none; cursor: pointer; color: red;">
+                                    <i class="fas fa-trash-alt"></i>Delete
+                                </button>
+                            </form>
                         </td>
+                        <!-- <td>{{ $user->created_at->format('Y-m-d H:i:s') }}</td> -->
                     </tr>
                 @endforeach
             </tbody>
@@ -34,5 +42,3 @@
 
 <!-- Font Awesome Icons -->
 <script src="https://kit.fontawesome.com/a076d05399.js"></script>
-<script src="https://cdn.tailwindcss.com"></script>
-@endsection
