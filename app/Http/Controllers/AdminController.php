@@ -34,12 +34,13 @@ class AdminController extends Controller
 
     public function userList()
     {
-        // Fetch all users
-        $users = User::all();
+        // Fetch all users except those with the 'admin' role
+        $users = User::where('role', '!=', 'admin')->get();
 
         // Pass users to the view
         return view('admin.userList', compact('users'));
     }
+
 
     public function destroy($id)
     {
