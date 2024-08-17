@@ -1,16 +1,87 @@
 @extends('admin.adminLayout')
 @section('main')
 
-<div class="ml-64 p-5 w-[calc(100%-250px)]"> <!-- Same as margin-left: 250px; padding: 20px; -->
-    <h1 class="text-2xl font-bold mb-5">Campaign List</h1>
+<style>
+    .content {
+        margin-left: 250px; /* Same as sidebar width */
+        padding: 20px;
+        width: calc(100% - 250px);
+    }
 
+    h1 {
+        font-size: 28px;
+        font-weight: bold;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    .alert {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+        border-radius: 4px;
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+
+    .alert .btn-close {
+        background: none;
+        border: none;
+        font-size: 1.25em;
+        color: #155724;
+        cursor: pointer;
+        position: absolute;
+        top: 10px;
+        right: 10px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    th, td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #f4f4f4;
+        font-weight: bold;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    .form-group {
+        margin: 0;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+        font-size: 1em;
+    }
+
+    .form-control:focus {
+        border-color: #80bdff;
+        outline: none;
+    }
+</style>
+
+<div class="content">
+    <h1>Campaign List</h1>
 
     @if (session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            <button type="button" class="btn-close" aria-label="Close"></button>
         </div>
-
     @endif
 
     <table>
@@ -48,14 +119,11 @@
                             </select>
                         </div>
                     </td>
-
-
                 </tr>
             @endforeach
         </tbody>
     </table>
 </div>
-
 
 <script>
     function updateStatus(campaignId, newStatus) {
@@ -85,4 +153,5 @@
         form.submit();
     }
 </script>
+
 @endsection

@@ -1,44 +1,106 @@
 @extends('admin.adminLayout')
 @section('main')
 
-<div class="ml-64 p-5"> <!-- content -->
-    <h1 class="text-2xl font-bold mb-5">User List</h1>
+<style>
+    /* General Styles */
+    .content {
+        margin-left: 250px;
+        padding: 20px;
+    }
 
-    <div class="bg-white p-5 rounded-lg shadow-lg mt-5"> <!-- card -->
-        <table class="w-[1200px] border-collapse mt-5"> <!-- table -->
+    h1 {
+        font-size: 28px;
+        font-weight: bold;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    /* Card Styles */
+    .card {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Table Styles */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    th, td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #f4f4f4;
+        font-weight: bold;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    /* Button Styles */
+    form button {
+        background-color: #e74c3c;
+        color: #fff;
+        border: none;
+        padding: 8px 12px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    form button:hover {
+        background-color: #c0392b;
+    }
+
+    form button i {
+        margin-right: 5px;
+    }
+</style>
+
+<div class="content"> <!-- content -->
+    <h1>User List</h1>
+
+    <div class="card"> <!-- card -->
+        <table> <!-- table -->
             <thead>
                 <tr>
-                    <th class="border border-gray-300 p-3 bg-blue-600 text-white">ID</th>
-                    <th class="border border-gray-300 p-3 bg-blue-600 text-white">Name</th>
-                    <th class="border border-gray-300 p-3 bg-blue-600 text-white">Email</th>
-                    <th class="border border-gray-300 p-3 bg-blue-600 text-white">Role</th>
-                    <th class="border border-gray-300 p-3 bg-blue-600 text-white">Action</th>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($users as $user)
-                    <tr>
-                        <td>{{ $user->id }}</td>
-                        <td>{{ $user->name }}</td>
-                        <td>{{ $user->email }}</td>
-                        <td>{{ ucfirst($user->role) }}</td>
-                        <td>
-                            <form action="{{ route('user.delete', $user->id) }}" method="POST" style="display: inline;"
-                                onsubmit="return confirm('Are you sure you want to delete this user?');">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" style="border: none; background: none; cursor: pointer; color: red;">
-                                    <i class="fas fa-trash-alt"></i>Delete
-                                </button>
-                            </form>
-                        </td>
-                        <!-- <td>{{ $user->created_at->format('Y-m-d H:i:s') }}</td> -->
-                    </tr>
+                <tr>
+                    <td>{{ $user->id }}</td>
+                    <td>{{ $user->name }}</td>
+                    <td>{{ $user->email }}</td>
+                    <td>{{ ucfirst($user->role) }}</td>
+                    <td>
+                        <form action="{{ route('user.delete', $user->id) }}" method="POST"
+                            onsubmit="return confirm('Are you sure you want to delete this user?');">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit">
+                                <i class="fas fa-trash-alt"></i> Delete
+                            </button>
+                        </form>
+                    </td>
+                    <!-- <td>{{ $user->created_at->format('Y-m-d H:i:s') }}</td> -->
+                </tr>
                 @endforeach
             </tbody>
         </table>
     </div>
 </div>
 
-<!-- Font Awesome Icons -->
-<script src="https://kit.fontawesome.com/a076d05399.js"></script>
