@@ -5,11 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Social Investment Platform</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
 
- 
-    
+.animate-fadeIn {
+    animation: fadeIn 1s ease-in-out;
+}
+
+
+@keyframes slideInFromLeft {
+    from { transform: translateX(-100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+.animate-slideInFromLeft {
+    animation: slideInFromLeft 1s ease-in-out;
+}
 
     </style>
+
+
 </head>
 
 <body class="m-0 p-0 h-[680px] font-sans">
@@ -67,13 +85,17 @@
     </nav>
     {{-- Hero container code --}}
     <div class="relative flex items-center justify-center h-full bg-cover bg-center text-white text-center"
-        style="background-image: url('https://static.vecteezy.com/system/resources/previews/025/867/281/original/money-donation-humanitarian-aid-charity-people-donating-finance-money-to-organizations-refugee-help-charitable-help-to-nonprofit-funds-flat-illustration-jar-with-coins-tiny-man-woman-vector.jpg');">
-        <div class="absolute inset-0 bg-black bg-opacity-60"></div>
-        <div class="relative z-10 max-w-lg">
-            <h1 class="text-3xl md:text-5xl">Empower Communities</h1>
-            <p class="text-lg md:text-2xl my-5">Invest in Social Causes, Startups, and Community Projects</p>
-            <a href="#loginSignup" class="inline-block px-6 py-3 mt-5 bg-transparent border-2 text-white text-xl rounded hover:border-green-300 hover: transition duration-300 ease-in-out">Ask For Dontation</a>
-        </div>
+    style="background-image: url('https://static.vecteezy.com/system/resources/previews/025/867/281/original/money-donation-humanitarian-aid-charity-people-donating-finance-money-to-organizations-refugee-help-charitable-help-to-nonprofit-funds-flat-illustration-jar-with-coins-tiny-man-woman-vector.jpg');">
+    <div class="absolute inset-0 bg-black bg-opacity-60"></div>
+    <div class="relative z-10 max-w-lg animate-fadeIn">
+        <h1 class="text-3xl md:text-5xl animate-slideInFromLeft">Empower Communities</h1>
+        <p class="text-lg md:text-2xl my-5 animate-slideInFromRight">Invest in Social Causes, Startups, and Community Projects</p>
+       {{-- <a href="#loginSignup" class="inline-block px-6 py-3 mt-5 bg-transparent border-2 text-white text-xl rounded hover:border-green-300 hover:bg-green-600 transition duration-300 ease-in-out animate-bounceIn">Raise Fund</a> --}}
+       <a href="{{ route('loginForm') }}" class="inline-block px-6 py-3 mt-5 bg-transparent border-2 text-white text-xl rounded hover:border-green-300 hover:bg-green-600 transition duration-300 ease-in-out animate-bounceIn">Raise Fund</a>
+
+    </div>
+</div>
+
     </div>
 
     <section class="py-8 bg-">

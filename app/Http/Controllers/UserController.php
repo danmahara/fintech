@@ -30,24 +30,46 @@ class UserController extends Controller
     public function register(Request $request)
     {
         // Validate the input
-        $request->validate([
+        // $request->validate([
+        //     'name' => 'required|string|max:255',
+        //     'email' => 'required|string|email|max:255|unique:users',
+        //     'password' => 'required|string|min:6|confirmed',
+        //     'role' => 'required|string|in:admin,project_owner,investor',
+
+        $validator = Validator::make($request->all(), [
+            'role' => 'required|string',
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
-            'role' => 'required|string|in:admin,project_owner,investor',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string|confirmed|min:8',
         ]);
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+
+        User::create([
+            'role' => $request->input('role'),
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'password' => Hash::make($request->input('password')), // Hash the password
+        ]);
+    
+        // Redirect or return a response
+        return redirect()->route('loginForm')->with('success', 'Registration successful. Please log in.');
+    }
+
 
         // Create the user
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
-            'role' => $request->role, // Ensure role is correctly assigned
-        ]);
+        // $user = User::create([
+        //     'name' => $request->name,
+        //     'email' => $request->email,
+        //     'password' => bcrypt($request->password),
+        //     'role' => $request->role, // Ensure role is correctly assigned
+        // ]);
 
-        return redirect()->route('loginForm');
+        // return redirect()->route('loginForm');
         // return response()->json(['success' => true, 'message' => 'Registered successfully', $user, 201]);
-    }
+    // }
 
     public function login(Request $request)
     {
