@@ -10,7 +10,7 @@ use Laravel\Passport\HasApiTokens;
 class User extends Authenticatable
 {
     use HasApiTokens, Notifiable;
- 
+
     /**
      * The attributes that are mass assignable.
      *
@@ -44,5 +44,9 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+    public function campaigns()
+    {
+        return $this->hasMany(Campaign::class, 'owner_id');
     }
 }

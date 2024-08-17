@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Donation;
 use Illuminate\Http\Request;
 use App\Models\Campaign;
+use App\Models\User;
 class DonationController extends Controller
 {
 
@@ -50,16 +51,23 @@ class DonationController extends Controller
 
 
 
-    public function index()
+    public function investorList($userId)
     {
-        // List donations (optional)
+        // Fetch the user and their donations
+        $user = User::findOrFail($userId);
+
+        // Assuming a User has many Donations and we need donations by user id
+        $donations = Donation::where('user_id', $userId)->get();
+
+        // Return the view with donations
+        return view('owner.investmentList', compact('donations'));
     }
+
+
+
     public function investmentList()
     {
         $user = auth()->user();
-
-        dd($user->role);
-        // dd($user->role);
 
         // Check if the authenticated user exists and has the role of 'investor'
         if ($user && $user->role === 'investor') {
