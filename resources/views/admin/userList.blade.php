@@ -1,60 +1,18 @@
 @extends('admin.adminLayout')
 @section('main')
-<style>
-    /* Add your existing styles or new styles here */
 
-    .content {
-        margin-left: 270px;
-        padding: 20px;
-    }
+<div class="ml-64 p-5"> <!-- content -->
+    <h1 class="text-2xl font-bold mb-5">User List</h1>
 
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-    }
-
-    table,
-    th,
-    td {
-        border: 1px solid #ddd;
-    }
-
-    th,
-    td {
-        padding: 12px;
-        text-align: left;
-    }
-
-    th {
-        background: #3498db;
-        color: white;
-    }
-
-    tr:nth-child(even) {
-        background: #f2f2f2;
-    }
-
-    .card {
-        background: #fff;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        margin-top: 20px;
-    }
-</style>
-<div class="content">
-    <h1>User List</h1>
-    <div class="card">
-        <table>
+    <div class="bg-white p-5 rounded-lg shadow-lg mt-5"> <!-- card -->
+        <table class="w-[1200px] border-collapse mt-5"> <!-- table -->
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Role</th>
-                    <th>Action</th>
-                    <!-- <th>Created At</th> -->
+                    <th class="border border-gray-300 p-3 bg-blue-600 text-white">ID</th>
+                    <th class="border border-gray-300 p-3 bg-blue-600 text-white">Name</th>
+                    <th class="border border-gray-300 p-3 bg-blue-600 text-white">Email</th>
+                    <th class="border border-gray-300 p-3 bg-blue-600 text-white">Role</th>
+                    <th class="border border-gray-300 p-3 bg-blue-600 text-white">Action</th>
                 </tr>
             </thead>
             <tbody>

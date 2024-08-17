@@ -1,70 +1,16 @@
 @extends('admin.adminLayout')
 @section('main')
 
-<style>
-    /* admin.css or inline style */
+<div class="ml-64 p-5 w-[calc(100%-250px)]"> <!-- Same as margin-left: 250px; padding: 20px; -->
+    <h1 class="text-2xl font-bold mb-5">Campaign List</h1>
 
-    .main-content {
-        margin-left: 250px;
-        /* Same as sidebar width */
-        padding: 20px;
-        width: calc(100% - 250px);
-        /* Adjust width to make space for the sidebar */
-    }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-    }
-
-    table,
-    th,
-    td {
-        border: 1px solid #ddd;
-    }
-
-    th,
-    td {
-        padding: 10px;
-        text-align: left;
-    }
-
-    th {
-        background-color: #3498db;
-        color: #fff;
-    }
-
-    tr:nth-child(even) {
-        background-color: #f2f2f2;
-    }
-
-    button {
-        background: #3498db;
-        color: #fff;
-        border: none;
-        padding: 5px 10px;
-        border-radius: 5px;
-        cursor: pointer;
-        margin: 0 5px;
-    }
-
-    button:hover {
-        background: #2980b9;
-    }
-
-    form {
-        display: inline;
-    }
-</style>
-<div class="main-content">
-    <h1>Campaign List</h1>
 
     @if (session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             {{ session('success') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
+
     @endif
 
     <table>
@@ -113,34 +59,30 @@
 
 <script>
     function updateStatus(campaignId, newStatus) {
-        // Create a new form element
         var form = document.createElement("form");
         form.method = "POST";
         form.action = "{{ route('admin.updateCampaignStatus', '') }}/" + campaignId;
 
-        // Add CSRF token input
         var csrfInput = document.createElement("input");
         csrfInput.type = "hidden";
         csrfInput.name = "_token";
         csrfInput.value = "{{ csrf_token() }}";
         form.appendChild(csrfInput);
 
-        // Add method input (to mimic PUT method)
         var methodInput = document.createElement("input");
         methodInput.type = "hidden";
         methodInput.name = "_method";
         methodInput.value = "PUT";
         form.appendChild(methodInput);
 
-        // Add the new status as an input
         var statusInput = document.createElement("input");
         statusInput.type = "hidden";
         statusInput.name = "status";
         statusInput.value = newStatus;
         form.appendChild(statusInput);
 
-        // Append the form to the body and submit it
         document.body.appendChild(form);
         form.submit();
     }
 </script>
+@endsection
