@@ -4,8 +4,13 @@
 <div class="ml-64 p-5 w-[calc(100%-250px)]"> <!-- Same as margin-left: 250px; padding: 20px; -->
     <h1 class="text-2xl font-bold mb-5">Campaign List</h1>
 
-    @if(session('success'))
-        <p class="text-green-600">{{ session('success') }}</p>
+
+    @if (session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
     @endif
 
     <table>
@@ -30,7 +35,8 @@
                             <label for="status">Update Status:</label>
                             <select class="form-control" id="status-{{ $campaign->id }}" name="status"
                                 onchange="updateStatus({{ $campaign->id }}, this.value)">
-                                <option value="under review" {{ $campaign->status == 'under review' ? 'selected' : '' }}>Under review
+                                <option value="under_review" {{ $campaign->status == 'under_review' ? 'selected' : '' }}>Under
+                                    review
                                 </option>
                                 <option value="pending" {{ $campaign->status == 'pending' ? 'selected' : '' }}>Pending
                                 </option>
