@@ -69,7 +69,7 @@ class CampaignController extends Controller
     public function updateCampaignStatus(Request $request, $id)
     {
         $request->validate([
-            'status' => 'required|in:pending,active,inactive,completed'
+            'status' => 'required|in:under_review,pending,active,failed,completed'
         ]);
 
         $campaign = Campaign::findOrFail($id);
