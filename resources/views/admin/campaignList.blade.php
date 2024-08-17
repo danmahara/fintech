@@ -86,10 +86,14 @@
                             <label for="status">Update Status:</label>
                             <select class="form-control" id="status-{{ $campaign->id }}" name="status"
                                 onchange="updateStatus({{ $campaign->id }}, this.value)">
+                                <option value="under review" {{ $campaign->status == 'under review' ? 'selected' : '' }}>Under review
+                                </option>
                                 <option value="pending" {{ $campaign->status == 'pending' ? 'selected' : '' }}>Pending
                                 </option>
                                 <option value="active" {{ $campaign->status == 'active' ? 'selected' : '' }}>Active</option>
                                 <option value="completed" {{ $campaign->status == 'completed' ? 'selected' : '' }}>Completed
+                                </option>
+                                <option value="failed" {{ $campaign->status == 'failed' ? 'selected' : '' }}>Failed
                                 </option>
                             </select>
                         </div>

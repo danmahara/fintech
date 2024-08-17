@@ -26,6 +26,31 @@ class CampaignController extends Controller
         return view('investor.campaignList', compact('approvedCampaigns'));
     }
 
+    public function updateCampaign(Request $request, $id)
+    {
+        // Validate the request data
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'goal_amount' => 'required|numeric|min:100',
+        ]);
+
+        // Find the campaign by ID
+        $campaign = Campaign::findOrFail($id);
+
+        // Update the campaign details
+        $campaign->title = $request->input('title');
+        $campaign->description = $request->input('description');
+        $campaign->goal_amount = $request->input('goal_amount');
+
+        // Save the changes
+        $campaign->save();
+
+        // Redirect back with a success message
+        return redirect()->route('owner.myCampaign')
+            ->with('success', 'Campaign updated successfully!');
+    }
+
     public function myCampaign()
     {
         // Retrieve campaigns where the authenticated user is the creator
@@ -94,11 +119,6 @@ class CampaignController extends Controller
     //     $campaign = Campaign::create($request->all());
     //     return response()->json($campaign, 201);
     // }
-
-    public function update(Request $request, $id)
-    {
-        // Update existing campaign
-    }
 
     public function destroy($id)
     {

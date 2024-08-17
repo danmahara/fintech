@@ -13,9 +13,8 @@
                 <th>Title</th>
                 <th>Description</th>
                 <th>Goal Amount</th>
+                <th>Raised Amount</th>
                 <th>Action</th>
-                <!-- <th>End Date</th>
-                    <th>Created At</th> -->
             </tr>
         </thead>
         <tbody>
@@ -24,24 +23,26 @@
                     <td>{{ $campaign->title }}</td>
                     <td>{{ $campaign->description }}</td>
                     <td>{{ $campaign->goal_amount }}</td>
+                    <td>{{ $campaign->raised_amount }}</td>
                     <td>
-                        <button class="btn-donate" data-campaign-id="{{ $campaign->id }}">Donate</button>
+                        @if ($campaign->raised_amount >= $campaign->goal_amount)
+                            <button class="btn-donate" disabled>Goal Reached</button>
+                        @else
+                            <button class="btn-donate" data-campaign-id="{{ $campaign->id }}">Donate</button>
+                        @endif
                     </td>
-                    <!-- <td>{{ $campaign->end_date }}</td> -->
-                    <!-- <td>{{ $campaign->created_at->format('Y-m-d') }}</td> -->
                 </tr>
             @endforeach
         </tbody>
     </table>
 </div>
 
-
 <!-- Donation Modal -->
 <div id="donationModal" class="modal">
     <div class="modal-content">
         <span class="close">&times;</span>
         <h2>Donate to Campaign</h2>
-        <form id="donationForm" action="{{route('investor.donate')}}" method="post">
+        <form id="donationForm" action="{{ route('investor.donate') }}" method="post">
             @csrf
             <input type="hidden" id="donation_campaign_id" name="campaign_id">
             <input type="hidden" id="donation_user_id" name="user_id" value="{{ auth()->id() }}">
@@ -54,10 +55,8 @@
     </div>
 </div>
 
-
-
-
-<script>document.addEventListener('DOMContentLoaded', function () {
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
         // Get the modal
         var modal = document.getElementById("donationModal");
         var amount = document.getElementById('amount');
@@ -104,8 +103,8 @@
             }
         });
     });
-
 </script>
+
 <style>
     .card {
         margin: 20px;
