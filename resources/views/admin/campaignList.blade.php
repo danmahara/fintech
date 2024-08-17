@@ -1,122 +1,60 @@
 @extends('admin.adminLayout')
 @section('main')
 
-<style>
-    /* admin.css or inline style */
-
-    .main-content {
-        margin-left: 250px;
-        /* Same as sidebar width */
-        padding: 20px;
-        width: calc(100% - 250px);
-        /* Adjust width to make space for the sidebar */
-    }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-    }
-
-    table,
-    th,
-    td {
-        border: 1px solid #ddd;
-    }
-
-    th,
-    td {
-        padding: 10px;
-        text-align: left;
-    }
-
-    th {
-        background-color: #3498db;
-        color: #fff;
-    }
-
-    tr:nth-child(even) {
-        background-color: #f2f2f2;
-    }
-
-    button {
-        background: #3498db;
-        color: #fff;
-        border: none;
-        padding: 5px 10px;
-        border-radius: 5px;
-        cursor: pointer;
-        margin: 0 5px;
-    }
-
-    button:hover {
-        background: #2980b9;
-    }
-
-    form {
-        display: inline;
-    }
-</style>
-<div class="main-content">
-    <h1>Campaign List</h1>
+<div class="ml-64 p-5 w-[calc(100%-250px)]"> <!-- Same as margin-left: 250px; padding: 20px; -->
+    <h1 class="text-2xl font-bold mb-5">Campaign List</h1>
 
     @if(session('success'))
-        <p>{{ session('success') }}</p>
+        <p class="text-green-600">{{ session('success') }}</p>
     @endif
-    <div class="container">
-    <h2 class="text-center">Approved Campaigns</h2>
 
-    @if ($approvedCampaigns->isEmpty())
-        <p>No approved campaigns found.</p>
-    @else
-        <div class="row">
-            @foreach ($approvedCampaigns as $campaign)
-                <div class="col-md-4">
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ $campaign->title }}</h5>
-                            <p class="card-text">{{ Str::limit($campaign->description, 100) }}</p>
-                            <p><strong>Goal Amount:</strong> ${{ number_format($campaign->goal_amount, 2) }}</p>
-                            <p><strong>End Date:</strong> {{ $campaign->end_date->format('M d, Y') }}</p>
-                            <a href="{{ route('campaign.show', $campaign->id) }}" class="btn btn-primary">View Details</a>
-                        </div>
+    <div class="container mx-auto">
+        <h2 class="text-center text-xl font-semibold mb-6">Approved Campaigns</h2>
+
+        @if ($approvedCampaigns->isEmpty())
+            <p class="text-gray-600">No approved campaigns found.</p>
+        @else
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                @foreach ($approvedCampaigns as $campaign)
+                    <div class="bg-white p-4 rounded-lg shadow-lg">
+                        <h5 class="text-lg font-semibold mb-2">{{ $campaign->title }}</h5>
+                        <p class="text-gray-700">{{ Str::limit($campaign->description, 100) }}</p>
+                        <p class="mt-2"><strong>Goal Amount:</strong> ${{ number_format($campaign->goal_amount, 2) }}</p>
+                        <p><strong>End Date:</strong> {{ $campaign->end_date->format('M d, Y') }}</p>
+                        <a href="{{ route('campaign.show', $campaign->id) }}" class="inline-block mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">View Details</a>
                     </div>
-                </div>
-            @endforeach
-        </div>
-    @endif
+                @endforeach
+            </div>
+        @endif
+    </div>
 </div>
 
 <script>
     function updateStatus(campaignId, newStatus) {
-        // Create a new form element
         var form = document.createElement("form");
         form.method = "POST";
         form.action = "{{ route('admin.updateCampaignStatus', '') }}/" + campaignId;
 
-        // Add CSRF token input
         var csrfInput = document.createElement("input");
         csrfInput.type = "hidden";
         csrfInput.name = "_token";
         csrfInput.value = "{{ csrf_token() }}";
         form.appendChild(csrfInput);
 
-        // Add method input (to mimic PUT method)
         var methodInput = document.createElement("input");
         methodInput.type = "hidden";
         methodInput.name = "_method";
         methodInput.value = "PUT";
         form.appendChild(methodInput);
 
-        // Add the new status as an input
         var statusInput = document.createElement("input");
         statusInput.type = "hidden";
         statusInput.name = "status";
         statusInput.value = newStatus;
         form.appendChild(statusInput);
 
-        // Append the form to the body and submit it
         document.body.appendChild(form);
         form.submit();
     }
 </script>
+@endsection

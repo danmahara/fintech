@@ -9,8 +9,9 @@ use App\Http\Controllers\ProjectOwnerController;
 use App\Http\Controllers\InvestorController;
 use App\Http\Controllers\CategoryController;
 // Public Routes
-Route::get('/', function () {
+Route::get('/', function () { 
     return view('index');
+
 });
 
 Route::get('/', [UserController::class, 'index'])->name('index');
