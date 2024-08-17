@@ -2,7 +2,6 @@
 @section('main')
 <style>
     /* Add your existing styles or new styles here */
-  
 
     .content {
         margin-left: 270px;
@@ -44,7 +43,6 @@
         margin-top: 20px;
     }
 </style>
-
 <div class="content">
     <h1>User List</h1>
     <div class="card">
@@ -66,7 +64,16 @@
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->email }}</td>
                         <td>{{ ucfirst($user->role) }}</td>
-                        <td><a href="">Delete</a></td>
+                        <td>
+                            <form action="{{ route('user.delete', $user->id) }}" method="POST" style="display: inline;"
+                                onsubmit="return confirm('Are you sure you want to delete this user?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" style="border: none; background: none; cursor: pointer; color: red;">
+                                    <i class="fas fa-trash-alt"></i>Delete
+                                </button>
+                            </form>
+                        </td>
                         <!-- <td>{{ $user->created_at->format('Y-m-d H:i:s') }}</td> -->
                     </tr>
                 @endforeach
@@ -77,6 +84,3 @@
 
 <!-- Font Awesome Icons -->
 <script src="https://kit.fontawesome.com/a076d05399.js"></script>
-</body>
-
-</html>
