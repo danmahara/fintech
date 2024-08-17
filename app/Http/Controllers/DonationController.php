@@ -73,7 +73,7 @@ class DonationController extends Controller
         }
 
         // If the user is not an investor or not authenticated, redirect or handle appropriately
-        return redirect()->route('investor.investmentList')->with('error', 'Access denied. Only investors can view the investment history.');
+        // return redirect()->route('investor.investmentList')->with('error', 'Access denied. Only investors can view the investment history.');
     }
 
 
