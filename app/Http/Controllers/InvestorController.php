@@ -30,23 +30,27 @@ class InvestorController extends Controller
         return view('investor.index', compact('totalDonations', 'totalCampaign'));
     }
 
-    public function investmentList()
-    {
-        $user = auth()->user();
+//     public function investmentList()
+// {
+//     $user = auth()->user();
 
-        // Check if the authenticated user exists and has the role of 'investor'
-        if ($user && $user->role === 'investor') {
-            // Fetch investments associated with the user
-            $investments = Donation::where('user_id', $user->id)
-                ->orderBy('created_at', 'desc')
-                ->get();
+//     // Debug the user role
+//     // dd($user->role); 
 
-            return view('investor.investmentList', compact('investments'));
-        }
+//     // Check if the authenticated user exists and has the role of 'investor'
+//     if ($user && $user->role === 'investor') {
+//         // Fetch investments associated with the user
+//         $investments = Donation::where('user_id', $user->id)
+//             ->orderBy('created_at', 'desc')
+//             ->get();
 
-        // If the user is not an investor or not authenticated, redirect or handle appropriately
-        return redirect()->route('index')->with('error', 'Access denied. Only investors can view the investment history.');
-    }
+//         return view('investor.investmentList', compact('investments'));
+//     }
+
+//     // If the user is not an investor or not authenticated, redirect or handle appropriately
+//     return redirect()->route('index')->with('error', 'Access denied. Only investors can view the investment history.');
+// }
+
 
     public function logout(Request $request)
     {

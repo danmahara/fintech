@@ -16,8 +16,8 @@ return new class extends Migration
             $table->foreignId('campaign_id')->constrained('campaigns')->onDelete('cascade');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->decimal('amount', 10, 2);
-            $table->text('description')->nullable();
-            $table->date('date');
+            // $table->text('description')->nullable();
+            // $table->date('date');
             $table->timestamps();
         });
     }

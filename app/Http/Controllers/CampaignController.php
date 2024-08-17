@@ -18,7 +18,7 @@ class CampaignController extends Controller
     public function approvedCampaignList()
     {
         // Fetch campaigns where the 'approved' status is true
-        $approvedCampaigns = Campaign::where('status', 'approved')
+        $approvedCampaigns = Campaign::where('status', 'active')
             ->orderBy('created_at', 'desc')
             ->get();
 
@@ -32,7 +32,8 @@ class CampaignController extends Controller
         $userId = auth()->id();
         $myCampaigns = Campaign::where('user_id', $userId)
             ->orderBy('created_at', 'desc')
-            ->get();
+            ->get()
+        ;
 
         // Return the view with the list of campaigns
         return view('owner.myCampaign', compact('myCampaigns'));

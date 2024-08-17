@@ -24,7 +24,7 @@
                     <td>{{ $campaign->description }}</td>
                     <td>{{ $campaign->goal_amount }}</td>
                     <td>
-                        <button class="btn-donate" data-campaign-id="{{ $campaign->id }}">Donate</button>
+                        <a href="">edit</a>
                     </td>
                     <!-- <td>{{ $campaign->created_at->format('Y-m-d') }}</td> -->
                 </tr>
@@ -33,22 +33,6 @@
     </table>
 </div>
 
-<!-- Donation Modal -->
-<div id="donationModal" class="modal">
-    <div class="modal-content">
-        <span class="close">&times;</span>
-        <h2>Donate to Campaign</h2>
-        <form id="donationForm" action="" method="POST">
-            @csrf
-            <input type="hidden" id="campaign_id" name="campaign_id">
-            <div class="form-group">
-                <label for="amount">Enter Amount:</label>
-                <input type="number" id="amount" name="amount" class="form-control" required>
-            </div>
-            <button type="submit" class="btn">Submit</button>
-        </form>
-    </div>
-</div>
 
 <style>
     .card {
@@ -85,24 +69,24 @@
 
     /* Modal Styles */
     .modal {
-        display: none; 
-        position: fixed; 
-        z-index: 1; 
+        display: none;
+        position: fixed;
+        z-index: 1;
         left: 0;
         top: 0;
         width: 100%;
         height: 100%;
-        overflow: auto; 
-        background-color: rgb(0,0,0); 
-        background-color: rgba(0,0,0,0.4); 
+        overflow: auto;
+        background-color: rgb(0, 0, 0);
+        background-color: rgba(0, 0, 0, 0.4);
     }
 
     .modal-content {
         background-color: #fefefe;
-        margin: 15% auto; 
+        margin: 15% auto;
         padding: 20px;
         border: 1px solid #888;
-        width: 80%; 
+        width: 80%;
         max-width: 500px;
     }
 
@@ -155,6 +139,8 @@
         background-color: #3498db;
     }
 </style>
+
+
 <script>
     // Get the modal
     var modal = document.getElementById("donationModal");
@@ -166,8 +152,8 @@
     var span = document.getElementsByClassName("close")[0];
 
     // When the user clicks on a button, open the modal and set the action URL
-    btns.forEach(function(btn) {
-        btn.onclick = function() {
+    btns.forEach(function (btn) {
+        btn.onclick = function () {
             var campaignId = this.getAttribute("data-campaign-id");
             document.getElementById("campaign_id").value = campaignId;
             document.getElementById("donationForm").action = `/path/to/donation/endpoint/${campaignId}`;
@@ -176,19 +162,19 @@
     });
 
     // When the user clicks on <span> (x), close the modal
-    span.onclick = function() {
+    span.onclick = function () {
         modal.style.display = "none";
     }
 
     // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function(event) {
+    window.onclick = function (event) {
         if (event.target == modal) {
             modal.style.display = "none";
         }
     }
 
     // Client-side validation
-    document.getElementById("donationForm").onsubmit = function(e) {
+    document.getElementById("donationForm").onsubmit = function (e) {
         var amount = parseFloat(document.getElementById("amount").value);
         var campaignGoal = parseFloat(document.getElementById("campaign_id").getAttribute("data-goal-amount"));
 
