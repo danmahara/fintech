@@ -18,7 +18,6 @@
                         <th>Investment Date</th>
                         <th>Campaign Title</th>
                         <th>Amount Invested</th>
-                        <th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -26,16 +25,7 @@
                         <tr>
                             <td>{{ $investment->created_at->format('M d, Y') }}</td>
                             <td>{{ $investment->campaign->title }}</td>
-                            <td>${{ number_format($investment->amount, 2) }}</td>
-                            <td>
-                                @if($investment->status == 'completed')
-                                    <span class="status-completed">Completed</span>
-                                @elseif($investment->status == 'pending')
-                                    <span class="status-pending">Pending</span>
-                                @else
-                                    <span class="status-canceled">Canceled</span>
-                                @endif
-                            </td>
+                            <td>{{ number_format($investment->amount, 2) }}</td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -62,7 +52,8 @@
         margin-top: 20px;
     }
 
-    .investment-table th, .investment-table td {
+    .investment-table th,
+    .investment-table td {
         padding: 12px;
         text-align: left;
         border-bottom: 1px solid #ddd;

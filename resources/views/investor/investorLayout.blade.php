@@ -148,7 +148,7 @@
     <div class="sidebar">
         <a href="{{ route('investor.index') }}" class="@yield('dashboard_active')"><i class="fas fa-tachometer-alt"></i>
             Dashboard</a>
-       <a href="{{route('investor.investmentList')}}" class="@yield('investments_active')"><i
+       <a href="{{route('investor.investmentList')}}" class="@yield('investment_active')"><i
                 class="fas fa-hand-holding-usd"></i> My Investments</a>
              
         <a href="{{route('investor.campaignList')}}" class="@yield('campaign_active')"><i

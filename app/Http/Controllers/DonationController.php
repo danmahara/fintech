@@ -12,28 +12,29 @@ class DonationController extends Controller
         // Validate the request data
         $request->validate([
             'amount' => 'required|numeric|min:100',
-            'campaign_id' => 'required|exists:campaigns,id',
+            'campaign_id' => 'required|exists:campaigns,id', // Assuming you have a campaigns table
         ]);
 
-        // Find the campaign
+        // dd($request->all());
         $campaign = Campaign::findOrFail($request->campaign_id);
 
-        // Check if the amount exceeds the goal amount
-        if ($request->amount > $campaign->goal_amount) {
-            return back()->withErrors(['amount' => 'The amount cannot exceed the goal amount.']);
+        if (!$campaign) {
+            return response()->jsons(['failed' => 'Campaing not found']);
         }
 
         // Create a new donation record
         $donation = new Donation();
         $donation->amount = $request->amount;
         $donation->campaign_id = $request->campaign_id;
-        $donation->user_id = auth()->id(); // Associate the donation with the authenticated user
+        $donation->user_id = $request->user_id; // Associate the donation with the authenticated user
         $donation->save();
 
         // Optionally: Update campaign progress or handle additional logic
 
         // Redirect with success message
-        return redirect()->route('owner.index')->with('success', 'Donation successfully made.');
+        // return response()->json(['success' => 'Donation successfully made.']);
+        // return response()->json(['success' => 'Donation successfully made.']);
+        return redirect()->route('investor.index')->with('success', 'Donation successfully made.');
     }
 
 
@@ -45,18 +46,21 @@ class DonationController extends Controller
     {
         $user = auth()->user();
 
+        // dd($user->role);
+
         // Check if the authenticated user exists and has the role of 'investor'
         if ($user && $user->role === 'investor') {
-            // Fetch investments associated with the user
+            //     // Fetch investments associated with the user
             $investments = Donation::where('user_id', $user->id)
                 ->orderBy('created_at', 'desc')
                 ->get();
 
             return view('investor.investmentList', compact('investments'));
+
         }
 
         // If the user is not an investor or not authenticated, redirect or handle appropriately
-        return redirect()->route('index')->with('error', 'Access denied. Only investors can view the investment history.');
+        return redirect()->route('investor.investmentList')->with('error', 'Access denied. Only investors can view the investment history.');
     }
 
 

@@ -10,9 +10,6 @@
         <h2>Total Investments</h2>
         <p>{{ $totalDonations }}</p>
     </div>
-    <div class="card">
-        <h2>Active Campaigns</h2>
-        <p>{{ $totalCampaign }}</p>
-    </div>
+  
 </div>
 @endsection

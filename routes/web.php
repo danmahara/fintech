@@ -48,5 +48,12 @@ Route::group(['prefix' => 'investor', 'middleware' => 'auth'], function () {
     Route::get('/', [InvestorController::class, 'countTotal'])->name('investor.index');
     Route::get('/investment', [DonationController::class, 'investmentList'])->name('investor.investmentList');
     Route::get('/compaign', [CampaignController::class, 'approvedCampaignList'])->name('investor.campaignList');
+
+
+    Route::post('donate', [DonationController::class, 'storeDonation'])->name('investor.donate');
+
+
+    // Route::post('/donate/{id}', [DonationController::class, 'storeDonation'])->name('investor.donate');
     Route::post('logout', [InvestorController::class, 'logout'])->name('investor.logout');
 });
+
