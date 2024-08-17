@@ -38,6 +38,8 @@ Route::group(['prefix' => 'owner', 'middleware' => 'auth'], function () {
     Route::post('campaignStore', [ProjectOwnerController::class, 'storeCampaign'])->name('campaignStore');
     Route::get('compaign', [CampaignController::class, 'myCampaign'])->name('owner.myCampaign');
 
+
+    Route::get('investors/{id}', [DonationController::class, 'investorList'])->name('owner.investerList');
     Route::put('/owner/update/{id}', [CampaignController::class, 'updateCampaign'])->name('owner.campaignUpdate');
     Route::post('logout', [ProjectOwnerController::class, 'logout'])->name('owner.logout');
 });

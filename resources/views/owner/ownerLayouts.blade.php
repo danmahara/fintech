@@ -40,7 +40,8 @@
             text-align: left;
             cursor: pointer;
             width: 100%;
-            box-sizing: border-box; /* Ensures padding is included in the element's width */
+            box-sizing: border-box;
+            /* Ensures padding is included in the element's width */
         }
 
         .sidebar a.active,
@@ -49,9 +50,10 @@
         }
 
         .sidebar a:hover,
-.sidebar button:hover {
-    background-color: #3498db; /* Light blue color on hover */
-}
+        .sidebar button:hover {
+            background-color: #3498db;
+            /* Light blue color on hover */
+        }
 
 
         .sidebar i {
@@ -131,8 +133,14 @@
 
     <div class="sidebar">
         <div>
-            <a href="{{ route('owner.index') }}" class="{{ request()->routeIs('owner.index') ? 'active' : '' }}"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-            <a href="{{route('owner.myCampaign')}}" class="{{ request()->routeIs('owner.myCampaign') ? 'active' : '' }}"><i class="fas fa-campaign"></i> My Campaigns</a>
+            <a href="{{ route('owner.index') }}" class="{{ request()->routeIs('owner.index') ? 'active' : '' }}"><i
+                    class="fas fa-tachometer-alt"></i> Dashboard</a>
+            <a href="{{route('owner.myCampaign')}}"
+                class="{{ request()->routeIs('owner.myCampaign') ? 'active' : '' }}"><i class="fas fa-campaign"></i> My
+                Campaigns</a>
+            <a href="{{route('owner.investerList', auth()->id())}}"
+                class="{{ request()->routeIs('owner.investorList') ? 'active' : '' }}"><i class="fas fa-campaign"></i>
+                Investors List</a>
             <form action="{{ route('owner.logout') }}" method="POST">
                 @csrf
                 <button type="submit" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</button>
